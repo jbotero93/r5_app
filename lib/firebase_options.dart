@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -49,9 +46,19 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDcsvffqgYrrKSgTrswNZpJJJR1Iv4JG_Y',
+    appId: '1:43701994987:web:84c269d20b584506aec5ae',
+    messagingSenderId: '43701994987',
+    projectId: 'prueba-r5',
+    authDomain: 'prueba-r5.firebaseapp.com',
+    storageBucket: 'prueba-r5.appspot.com',
+    measurementId: 'G-G5P8MZCMJW',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBqpoY6DgJIhKCtYfGQpqersEQ2u27o5nI',
-    appId: '1:43701994987:android:c4f3d6ebaf60232baec5ae',
+    appId: '1:43701994987:android:511285f6b78b32deaec5ae',
     messagingSenderId: '43701994987',
     projectId: 'prueba-r5',
     storageBucket: 'prueba-r5.appspot.com',
@@ -59,7 +66,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBFFg9fPU5pD3mpWk6zvrUcR4lVqlg_vPg',
-    appId: '1:43701994987:ios:9d4ae0672f5a5133aec5ae',
+    appId: '1:43701994987:ios:226028d3c3b219d0aec5ae',
     messagingSenderId: '43701994987',
     projectId: 'prueba-r5',
     storageBucket: 'prueba-r5.appspot.com',
