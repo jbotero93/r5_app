@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:r5_app/todo/todo_injection.dart';
+import 'package:r5_app/add_todo/add_todo_injection.dart';
 import 'package:r5_app/utils/r5_colors.dart';
 
 class TodoPage extends StatelessWidget {
@@ -12,16 +12,17 @@ class TodoPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             PageTransition(
-              type: PageTransitionType.fade,
-              child: TodoInjection.injection(),
+              type: PageTransitionType.rightToLeftJoined,
+              childCurrent: this,
+              child: AddTodoInjection.injection(),
             ),
           );
         },
         backgroundColor: R5Colors.green,
-        child: Icon(
+        child: const Icon(
           Icons.add_task_sharp,
           color: R5Colors.blue,
         ),

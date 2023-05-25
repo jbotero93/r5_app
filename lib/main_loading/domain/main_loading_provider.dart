@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:r5_app/common/api_response.dart';
 
 class MainLoadingProvider with ChangeNotifier {
   final isLogged = ValueNotifier<bool>(false);

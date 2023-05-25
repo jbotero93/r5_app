@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:r5_app/firebase_options.dart';
-import 'package:r5_app/main_loading/interface/main_loading_page.dart';
 import 'package:r5_app/main_loading/main_loading_injection.dart';
-import 'package:r5_app/utils/r5_colors.dart';
 
 Future<void> main() async {
   // await Firebase.initializeApp(
