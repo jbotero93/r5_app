@@ -8,7 +8,7 @@ class MainLoadingInjection {
 
   static Widget injection() {
     return ListenableProvider(
-      create: (context) => MainLoadingProvider(),
+      create: (context) => MainLoadingProvider()..checkAuth(),
       child: const MainLoadingPage(),
     );
   }
