@@ -54,40 +54,41 @@ class LoginPage extends StatelessWidget {
                   height: 20,
                 ),
                 ValueListenableBuilder(
-                    valueListenable: loginProvider.obscureText,
-                    builder: (context, obscureText, snapshot) {
-                      return TextField(
-                        obscureText: obscureText,
-                        controller: loginProvider.passwordController.value,
-                        style: GoogleFonts.rubik(
+                  valueListenable: loginProvider.obscureText,
+                  builder: (context, obscureText, snapshot) {
+                    return TextField(
+                      obscureText: obscureText,
+                      controller: loginProvider.passwordController.value,
+                      style: GoogleFonts.rubik(
+                        color: R5Colors.blue,
+                      ),
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: Text(
+                          'Contraseña',
+                          style: GoogleFonts.rubik(
+                            color: R5Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            //Puede parecer redundante pero si no hay un reseteo de valor en la
+                            //Variable no hace la actualización de estado el ValueNotifier
+                            loginProvider.obscureText.value =
+                                !loginProvider.obscureText.value;
+                          },
+                          icon: Icon(
+                            obscureText
+                                ? Icons.remove_red_eye_outlined
+                                : Icons.remove_red_eye_rounded,
+                          ),
                           color: R5Colors.blue,
                         ),
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          label: Text(
-                            'Contraseña',
-                            style: GoogleFonts.rubik(
-                              color: R5Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              //Puede parecer redundante pero si no hay un reseteo de valor en la
-                              //Variable no hace la actualización de estado el ValueNotifier
-                              loginProvider.obscureText.value =
-                                  !loginProvider.obscureText.value;
-                            },
-                            icon: Icon(
-                              obscureText
-                                  ? Icons.remove_red_eye_outlined
-                                  : Icons.remove_red_eye_rounded,
-                            ),
-                            color: R5Colors.blue,
-                          ),
-                        ),
-                      );
-                    }),
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -136,6 +137,25 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: R5Colors.blue,
                       ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  '¿Aún no tienes una?',
+                  style: GoogleFonts.rubik(
+                    color: R5Colors.blue,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'Crear cuenta',
+                    style: GoogleFonts.rubik(
+                      color: R5Colors.blue,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
