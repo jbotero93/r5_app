@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:r5_app/login/domain/login_provider.dart';
+import 'package:r5_app/signup/signup_injection.dart';
 import 'package:r5_app/todo/todo_injection.dart';
 import 'package:r5_app/utils/r5_colors.dart';
 
@@ -140,7 +141,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text(
@@ -150,7 +151,15 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        child: SignupInjection.injection(),
+                      ),
+                    );
+                  },
                   child: Text(
                     'Crear cuenta',
                     style: GoogleFonts.rubik(

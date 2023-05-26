@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:r5_app/common/api_response.dart';
-import 'package:r5_app/common/models/todo_model.dart';
 
 class AddTodoExternal {
   final FirebaseFirestore collectionRef = FirebaseFirestore.instance;
