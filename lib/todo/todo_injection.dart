@@ -8,7 +8,7 @@ class TodoInjection {
 
   static Widget injection() {
     return ListenableProvider(
-      create: (context) => TodoProvider(),
+      create: (context) => TodoProvider()..getTodoList(),
       child: const TodoPage(),
     );
   }

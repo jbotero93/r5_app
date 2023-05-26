@@ -28,14 +28,15 @@ class TodoModel {
     };
   }
 
-  factory TodoModel.fromMap(Map<String, dynamic> map) {
+  factory TodoModel.fromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     return TodoModel(
-      content: map['content'],
-      title: map['title'],
-      timeStamp: map['timeStamp'],
-      dateTime: map['dateTime'].toDate(),
-      displayDate: map['displayDate'],
-      isFinished: map['isFinished'],
+      content: data['content'],
+      title: data['title'],
+      timeStamp: data['timeStamp'],
+      dateTime: data['dateTime'].toDate(),
+      displayDate: data['displayDate'],
+      isFinished: data['isFinished'],
     );
   }
 }

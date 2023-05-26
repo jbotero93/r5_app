@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:r5_app/add_todo/add_todo_injection.dart';
+import 'package:r5_app/main_loading/main_loading_injection.dart';
+import 'package:r5_app/todo/domain/todo_provider.dart';
+import 'package:r5_app/todo/interface/widgets/todo_card.dart';
 import 'package:r5_app/utils/r5_colors.dart';
 
 class TodoPage extends StatelessWidget {
@@ -9,14 +13,14 @@ class TodoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final todoProvider = Provider.of<TodoProvider>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             PageTransition(
-              type: PageTransitionType.rightToLeftJoined,
-              childCurrent: this,
+              type: PageTransitionType.fade,
               child: AddTodoInjection.injection(),
             ),
           );
@@ -33,21 +37,100 @@ class TodoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'R5 ToDo!',
+                  style: GoogleFonts.rubik(
+                    color: R5Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    todoProvider.logOut().then(
+                      (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(value.message),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                        Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            child: MainLoadingInjection.injection(),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    'Cerrar sesión',
+                    style: GoogleFonts.rubik(
+                      color: R5Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Text(
-              'R5 ToDo!',
+              '¡Recuerda hacer doble click para confirmar finalizar una tarea!',
               style: GoogleFonts.rubik(
                 color: R5Colors.blue,
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return Container();
-                },
-              ),
+              child: ValueListenableBuilder(
+                  valueListenable: todoProvider.apiResponse,
+                  builder: (context, apiResponse, snapshot) {
+                    return ValueListenableBuilder(
+                      valueListenable: todoProvider.todoList,
+                      builder: (context, todoList, snapshot) {
+                        return ListView.builder(
+                          itemCount: todoList.length,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return apiResponse == null
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : apiResponse.isSuccess == false
+                                    ? Center(
+                                        child: Text(
+                                          'Hubo un error con la info',
+                                          style: GoogleFonts.rubik(
+                                            color: R5Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 30,
+                                          ),
+                                        ),
+                                      )
+                                    : apiResponse.isSuccess == true
+                                        ? TodoCard().buildTodoCard(
+                                            model: todoList[index],
+                                            todoProvider: todoProvider,
+                                            context: context,
+                                          )
+                                        : Center(
+                                            child: Text(
+                                              'Hubo un error inesperado',
+                                              style: GoogleFonts.rubik(
+                                                color: R5Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 30,
+                                              ),
+                                            ),
+                                          );
+                          },
+                        );
+                      },
+                    );
+                  }),
             )
           ],
         ),
