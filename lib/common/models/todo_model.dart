@@ -7,8 +7,10 @@ class TodoModel {
   DateTime dateTime;
   String displayDate;
   bool isFinished;
+  String uid;
 
   TodoModel({
+    required this.uid,
     required this.content,
     required this.title,
     required this.timeStamp,
@@ -25,6 +27,7 @@ class TodoModel {
       'dateTime': dateTime,
       'displayDate': displayDate,
       'isFinished': isFinished,
+      'uid': uid,
     };
   }
 
@@ -37,6 +40,7 @@ class TodoModel {
       dateTime: data['dateTime'].toDate(),
       displayDate: data['displayDate'],
       isFinished: data['isFinished'],
+      uid: data['uid'],
     );
   }
 }

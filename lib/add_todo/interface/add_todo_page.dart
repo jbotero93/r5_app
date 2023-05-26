@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:r5_app/add_todo/domain/add_todo_provider.dart';
 import 'package:r5_app/common/widgets/r5_appbar.dart';
+import 'package:r5_app/todo/todo_injection.dart';
 import 'package:r5_app/utils/r5_colors.dart';
 
 class AddTodoPage extends StatelessWidget {
@@ -99,7 +101,13 @@ class AddTodoPage extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         addTodoProvider.saveTodo().then((value) {
-                          Navigator.of(context).pop();
+                          Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              child: TodoInjection.injection(),
+                            ),
+                          );
                         });
                       },
                       child: Container(

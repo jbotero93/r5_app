@@ -18,6 +18,7 @@ class AddTodoProvider with ChangeNotifier {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('dd/MM/yyyy').format(now);
     TodoModel model = TodoModel(
+      uid: user.uid,
       content: contentController.value.text,
       displayDate: formattedDate,
       isFinished: false,
