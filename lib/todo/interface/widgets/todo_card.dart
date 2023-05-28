@@ -31,6 +31,7 @@ class TodoCard {
             ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     model.title,
@@ -40,11 +41,29 @@ class TodoCard {
                       fontSize: 20,
                     ),
                   ),
-                  Text(model.content),
+                  Text(model.content, style: GoogleFonts.rubik()),
                   const Divider(
-                    color: R5Colors.green,
+                    color: R5Colors.blue,
                   ),
-                  Text(model.displayDate),
+                  Text(
+                    'Traducción',
+                    style: GoogleFonts.rubik(
+                      fontWeight: FontWeight.bold,
+                      color: R5Colors.green,
+                    ),
+                  ),
+                  Text(
+                    model.titleTranslated ?? 'Sin traducción',
+                    style: GoogleFonts.rubik(
+                      color: R5Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    model.contentTranslated ?? 'Sin traducción',
+                    style: GoogleFonts.rubik(),
+                  ),
                 ],
               ),
             ),

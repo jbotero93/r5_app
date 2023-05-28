@@ -7,25 +7,20 @@ class TodoExternal {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Future<ApiResponse> getTodoList({required String uid}) async {
+  Stream<List<TodoModel>>? getTodoList() {
     try {
-      QuerySnapshot querySnapshot = await firestore
+      return FirebaseFirestore.instance
           .collection(uid)
-          .orderBy('timeStamp', descending: true)
-          .get();
-      List<TodoModel> todos =
-          querySnapshot.docs.map((doc) => TodoModel.fromSnapshot(doc)).toList();
-
-      return ApiResponse(
-        isSuccess: true,
-        message: 'Datos obtenidos correctamente',
-        data: todos,
-      );
+          .snapshots()
+          .map((QuerySnapshot querySnapshot) {
+        return querySnapshot.docs.map(
+          (doc) {
+            return TodoModel.fromSnapshot(doc);
+          },
+        ).toList();
+      });
     } catch (e) {
-      return ApiResponse(
-        isSuccess: false,
-        message: 'Hubo un error al obtener los datos',
-      );
+      return null;
     }
   }
 

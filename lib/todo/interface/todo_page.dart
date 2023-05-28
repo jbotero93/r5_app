@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:r5_app/add_todo/add_todo_injection.dart';
+import 'package:r5_app/common/models/todo_model.dart';
 import 'package:r5_app/main_loading/main_loading_injection.dart';
 import 'package:r5_app/todo/domain/todo_provider.dart';
 import 'package:r5_app/todo/interface/widgets/todo_card.dart';
@@ -79,70 +80,48 @@ class TodoPage extends StatelessWidget {
               ],
             ),
             Text(
-              '¡Recuerda hacer doble click para confirmar finalizar una tarea!',
+              '¡Recuerda renovar tu seguro con nosotros!',
               style: GoogleFonts.rubik(
                 color: R5Colors.blue,
               ),
             ),
             Expanded(
-              child: ValueListenableBuilder(
-                valueListenable: todoProvider.isLoading,
-                builder: (context, isLoading, snapshot) {
-                  return isLoading == false
-                      ? ValueListenableBuilder(
-                          valueListenable: todoProvider.apiResponse,
-                          builder: (context, apiResponse, snapshot) {
-                            return ValueListenableBuilder(
-                              valueListenable: todoProvider.todoList,
-                              builder: (context, todoList, snapshot) {
-                                return ListView.builder(
-                                  itemCount: todoList.length,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return apiResponse == null
-                                        ? const Center(
-                                            child: CircularProgressIndicator(),
-                                          )
-                                        : apiResponse.isSuccess == false
-                                            ? Center(
-                                                child: Text(
-                                                  'Hubo un error con la info',
-                                                  style: GoogleFonts.rubik(
-                                                    color: R5Colors.blue,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 30,
-                                                  ),
-                                                ),
-                                              )
-                                            : apiResponse.isSuccess == true
-                                                ? TodoCard().buildTodoCard(
-                                                    model: todoList[index],
-                                                    todoProvider: todoProvider,
-                                                    context: context,
-                                                  )
-                                                : Center(
-                                                    child: Text(
-                                                      'Hubo un error inesperado',
-                                                      style: GoogleFonts.rubik(
-                                                        color: R5Colors.blue,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 30,
-                                                      ),
-                                                    ),
-                                                  );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
+              child: StreamBuilder(
+                stream: todoProvider.getTodoList(),
+                builder: (context, AsyncSnapshot<List<TodoModel>> snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    List<TodoModel> todoList = snapshot.data!;
+
+                    return ListView.builder(
+                      itemCount: todoList.length,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return TodoCard().buildTodoCard(
+                          model: todoList[index],
+                          todoProvider: todoProvider,
+                          context: context,
                         );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Hubo un error con la info',
+                        style: GoogleFonts.rubik(
+                          color: R5Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
