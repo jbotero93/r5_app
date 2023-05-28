@@ -9,8 +9,10 @@ import 'package:r5_app/common/models/todo_model.dart';
 class AddTodoProvider with ChangeNotifier {
   final contentController =
       ValueNotifier<TextEditingController>(TextEditingController());
+
   final titleController =
       ValueNotifier<TextEditingController>(TextEditingController());
+
   Future<ApiResponse> saveTodo() async {
     //Auth
     User user = FirebaseAuth.instance.currentUser!;

@@ -1,27 +1,27 @@
 const functions = require("firebase-functions");
+const {Translate} = require("@google-cloud/translate").v2;
 const admin = require("firebase-admin");
-const translate = require("@vitalets/google-translate-api");
 
 admin.initializeApp();
 
-exports.translateTask = functions.firestore
+const translate = new Translate();
+
+exports.translateText = functions.firestore
     .document("{userId}/{taskId}")
     .onCreate(async (snapshot, context) => {
-      try {
-        const taskData = snapshot.data();
-        const taskText = taskData.texto;
+    // Obtiene el texto de la tarea creada
+      const task = snapshot.data();
+      const content = task.content;
+      const title = task.title;
+      const taskId = snapshot.id;
+      const userId = task.uid;
 
-        const userId = context.params.userId;
-        const taskId = context.params.taskId;
+      // Traduce el texto a inglés
+      const [cTranslation] = await translate.translate(content, "en");
+      const [tTranslation] = await translate.translate(title, "en");
 
-        const translatedText = await translate(taskText, {to: "en"});
-
-        const taskRef = snapshot.ref;
-        await taskRef.update({textoTraducido: translatedText.text});
-
-        console.log("Tarea traducida y actualizada:", taskRef.path);
-      } catch (error) {
-        console.error("Error al traducir la tarea:", error);
-        // Realiza cualquier manejo de errores adicional que desees aquí
-      }
+      // Actualiza el campo de texto en inglés en Firestore
+      await snapshot.ref.set({titleTranslated: tTranslation}, {merge: true});
+      await snapshot.ref.set({contentTranslated: cTranslation}, {merge: true});
+      console.log(`Texto traducido: ${tTranslation}`);
     });

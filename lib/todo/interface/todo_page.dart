@@ -86,51 +86,62 @@ class TodoPage extends StatelessWidget {
             ),
             Expanded(
               child: ValueListenableBuilder(
-                  valueListenable: todoProvider.apiResponse,
-                  builder: (context, apiResponse, snapshot) {
-                    return ValueListenableBuilder(
-                      valueListenable: todoProvider.todoList,
-                      builder: (context, todoList, snapshot) {
-                        return ListView.builder(
-                          itemCount: todoList.length,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return apiResponse == null
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : apiResponse.isSuccess == false
-                                    ? Center(
-                                        child: Text(
-                                          'Hubo un error con la info',
-                                          style: GoogleFonts.rubik(
-                                            color: R5Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 30,
-                                          ),
-                                        ),
-                                      )
-                                    : apiResponse.isSuccess == true
-                                        ? TodoCard().buildTodoCard(
-                                            model: todoList[index],
-                                            todoProvider: todoProvider,
-                                            context: context,
+                valueListenable: todoProvider.isLoading,
+                builder: (context, isLoading, snapshot) {
+                  return isLoading == false
+                      ? ValueListenableBuilder(
+                          valueListenable: todoProvider.apiResponse,
+                          builder: (context, apiResponse, snapshot) {
+                            return ValueListenableBuilder(
+                              valueListenable: todoProvider.todoList,
+                              builder: (context, todoList, snapshot) {
+                                return ListView.builder(
+                                  itemCount: todoList.length,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return apiResponse == null
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
                                           )
-                                        : Center(
-                                            child: Text(
-                                              'Hubo un error inesperado',
-                                              style: GoogleFonts.rubik(
-                                                color: R5Colors.blue,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 30,
-                                              ),
-                                            ),
-                                          );
+                                        : apiResponse.isSuccess == false
+                                            ? Center(
+                                                child: Text(
+                                                  'Hubo un error con la info',
+                                                  style: GoogleFonts.rubik(
+                                                    color: R5Colors.blue,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 30,
+                                                  ),
+                                                ),
+                                              )
+                                            : apiResponse.isSuccess == true
+                                                ? TodoCard().buildTodoCard(
+                                                    model: todoList[index],
+                                                    todoProvider: todoProvider,
+                                                    context: context,
+                                                  )
+                                                : Center(
+                                                    child: Text(
+                                                      'Hubo un error inesperado',
+                                                      style: GoogleFonts.rubik(
+                                                        color: R5Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 30,
+                                                      ),
+                                                    ),
+                                                  );
+                                  },
+                                );
+                              },
+                            );
                           },
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      },
-                    );
-                  }),
+                },
+              ),
             )
           ],
         ),

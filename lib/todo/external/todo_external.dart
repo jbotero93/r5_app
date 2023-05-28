@@ -9,7 +9,10 @@ class TodoExternal {
 
   Future<ApiResponse> getTodoList({required String uid}) async {
     try {
-      QuerySnapshot querySnapshot = await firestore.collection(uid).get();
+      QuerySnapshot querySnapshot = await firestore
+          .collection(uid)
+          .orderBy('timeStamp', descending: true)
+          .get();
       List<TodoModel> todos =
           querySnapshot.docs.map((doc) => TodoModel.fromSnapshot(doc)).toList();
 
