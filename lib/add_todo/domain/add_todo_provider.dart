@@ -24,7 +24,6 @@ class AddTodoProvider with ChangeNotifier {
       content: contentController.value.text,
       displayDate: formattedDate,
       isFinished: false,
-      dateTime: now,
       timeStamp: Timestamp.now(),
       title: titleController.value.text,
     );
