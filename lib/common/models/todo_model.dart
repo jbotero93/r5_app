@@ -6,7 +6,6 @@ class TodoModel {
   String title;
   String? titleTranslated;
   Timestamp timeStamp;
-  DateTime dateTime;
   String displayDate;
   bool isFinished;
   String uid;
@@ -18,7 +17,6 @@ class TodoModel {
     required this.title,
     this.titleTranslated,
     required this.timeStamp,
-    required this.dateTime,
     required this.displayDate,
     required this.isFinished,
   });
@@ -30,7 +28,6 @@ class TodoModel {
       'title': title,
       'titleTranslated': titleTranslated,
       'timeStamp': timeStamp,
-      'dateTime': dateTime,
       'displayDate': displayDate,
       'isFinished': isFinished,
       'uid': uid,
@@ -45,7 +42,6 @@ class TodoModel {
       title: data['title'],
       titleTranslated: data['titleTranslated'],
       timeStamp: data['timeStamp'],
-      dateTime: data['dateTime'].toDate(),
       displayDate: data['displayDate'],
       isFinished: data['isFinished'],
       uid: data['uid'],
